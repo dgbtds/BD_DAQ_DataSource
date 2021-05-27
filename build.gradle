@@ -1,0 +1,55 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "gradle.plugin.ua.eshepelyuk:ManifestClasspath:1.0.0"
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+    }
+}
+plugins {
+    id 'java'
+}
+apply plugin: "ua.eshepelyuk.ManifestClasspath"
+apply plugin: 'com.github.johnrengelman.shadow'
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    compile group: 'com.google.guava', name: 'guava', version: '30.0-jre'
+
+    // https://mvnrepository.com/artifact/io.netty/netty-all
+    compile group: 'io.netty', name: 'netty-all', version: '4.1.42.Final'
+
+}
+jar {
+    archiveBaseName.set('TcpServer')
+    archiveAppendix.set('dataSource')
+    archiveVersion.set('1.0')
+    archiveClassifier.set('release')
+    archiveExtension.set('jar')
+    manifest {
+        attributes 'Main-Class': 'Spark.TcpServer'
+    }
+    zip64 true
+}
+shadowJar {
+    archiveBaseName.set('VarLength')
+    archiveAppendix.set('ServerNetty')
+    archiveVersion.set('shadow')
+    archiveClassifier.set('release')
+    archiveExtension.set('jar')
+    manifest {
+        attributes 'Main-Class': 'LtpcServer.ServerNetty'
+    }
+    zip64 true
+}
